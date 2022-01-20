@@ -1,0 +1,129 @@
+{
+  "messages": [
+    {
+      "content": "Bien, tengo una estancia de 4 noches en nueva york a partir del 2022-01-14.  ¿Quieres que complete la reservación?",
+      "contentType": "PlainText"
+    }
+  ],
+  "sessionState": {
+    "dialogAction": {
+      "type": "ConfirmIntent"
+    },
+    "intent": {
+      "name": "BookHotel",
+      "slots": {
+        "CheckInDate": {
+          "value": {
+            "originalValue": "14 enero",
+            "interpretedValue": "2022-01-14",
+            "resolvedValues": [
+              "2022-01-14"
+            ]
+          }
+        },
+        "Location": {
+          "value": {
+            "originalValue": "nueva york",
+            "interpretedValue": "nueva york",
+            "resolvedValues": [
+              "nueva york"
+            ]
+          }
+        },
+        "Nights": {
+          "value": {
+            "originalValue": "4",
+            "interpretedValue": "4",
+            "resolvedValues": [
+              "4"
+            ]
+          }
+        },
+        "RoomType": {
+          "value": {
+            "originalValue": "queen",
+            "interpretedValue": "queen",
+            "resolvedValues": [
+              "queen"
+            ]
+          }
+        }
+      },
+      "state": "InProgress",
+      "confirmationState": "None"
+    },
+    "originatingRequestId": "cfd724ef-dcfd-408b-a683-2d2600d3d97e"
+  },
+  "interpretations": [
+    {
+      "nluConfidence": {
+        "score": 1
+      },
+      "intent": {
+        "name": "BookHotel",
+        "slots": {
+          "CheckInDate": {
+            "value": {
+              "originalValue": "14 enero",
+              "interpretedValue": "2022-01-14",
+              "resolvedValues": [
+                "2022-01-14"
+              ]
+            }
+          },
+          "Location": {
+            "value": {
+              "originalValue": "nueva york",
+              "interpretedValue": "nueva york",
+              "resolvedValues": [
+                "nueva york"
+              ]
+            }
+          },
+          "Nights": {
+            "value": {
+              "originalValue": "4",
+              "interpretedValue": "4",
+              "resolvedValues": [
+                "4"
+              ]
+            }
+          },
+          "RoomType": {
+            "value": {
+              "originalValue": "queen",
+              "interpretedValue": "queen",
+              "resolvedValues": [
+                "queen"
+              ]
+            }
+          }
+        },
+        "state": "InProgress",
+        "confirmationState": "None"
+      }
+    },
+    {
+      "intent": {
+        "name": "FallbackIntent",
+        "slots": {}
+      }
+    },
+    {
+      "nluConfidence": {
+        "score": 0.32
+      },
+      "intent": {
+        "name": "BookCar",
+        "slots": {
+          "CarType": null,
+          "DriverAge": null,
+          "PickUpCity": null,
+          "PickUpDate": null,
+          "ReturnDate": null
+        }
+      }
+    }
+  ],
+  "sessionId": "228357775571292"
+}
