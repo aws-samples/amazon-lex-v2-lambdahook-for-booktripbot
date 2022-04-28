@@ -168,7 +168,6 @@ def try_ex(value):
     """
     Call passed in function in try block. If KeyError is encountered return None.
     This function is intended to be used to safely access dictionary of the Slots section in the payloads.
-
     Note that this function would have negative impact on performance.
     """
 
@@ -390,7 +389,6 @@ def validate_hotel(slots):
 def book_hotel(intent_request):
     """
     Performs dialog management and fulfillment for booking a hotel.
-
     Beyond fulfillment, the implementation for this intent demonstrates the following:
     1) Use of elicitSlot in slot validation and re-prompting
     2) Use of sessionAttributes to pass information that can be used to guide conversation
@@ -473,7 +471,6 @@ def book_hotel(intent_request):
 def book_car(intent_request):
     """
     Performs dialog management and fulfillment for booking a car.
-
     Beyond fulfillment, the implementation for this intent demonstrates the following:
     1) Use of elicitSlot in slot validation and re-prompting
     2) Use of sessionAttributes to pass information that can be used to guide conversation
@@ -490,6 +487,7 @@ def book_car(intent_request):
     intent = intent_request['sessionState']['intent']
     active_contexts = {}
 
+    logger.debug(confirmation_status)
     # Load confirmation history and track the current reservation.
     reservation = {
         'ReservationType': 'Car',
@@ -500,12 +498,14 @@ def book_car(intent_request):
         'CarType': car_type
     }
     
-    
     if intent_request['invocationSource'] == 'DialogCodeHook':
         # Validate any slots which have been specified.  If any are invalid, re-elicit for their value
         logger.debug('calling validate_book_car')
         validation_result = validate_book_car(intent_request['sessionState']['intent']['slots'])
         if not validation_result['isValid']:
+            if validation_result['violatedSlot'] == 'DriverAge' and confirmation_status == 'Denied':
+                validation_result['violatedSlot'] = 'PickUpCity'
+                intent['slots'] = {}
             slots[validation_result['violatedSlot']] = None
             return elicit_slot(
                 session_attributes,
@@ -513,7 +513,7 @@ def book_car(intent_request):
                 intent,
                 validation_result['violatedSlot'],
                 validation_result['message']
-            )
+            )  
 
     if pickup_city and pickup_date and return_date and driver_age and car_type:
         # Generate the price of the car in case it is necessary for future steps.
