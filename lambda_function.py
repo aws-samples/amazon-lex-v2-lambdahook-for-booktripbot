@@ -62,10 +62,6 @@ def elicit_slot(session_attributes, active_contexts, intent, slot_to_elicit, mes
                 'slotToElicit': slot_to_elicit
             },
             'intent': intent,
-            'messages': [{
-                    'contentType': 'PlainText',
-                    'content': message
-            }]
         }
     }
 
@@ -78,11 +74,7 @@ def confirm_intent(active_contexts, session_attributes, intent, message):
             'dialogAction': {
                 'type': 'ConfirmIntent'
             },
-            'intent': intent,
-            'messages': [{
-                'contentType': 'PlainText',
-                'content': message
-            }]
+            'intent': intent
         }
     }
 
@@ -102,9 +94,8 @@ def close(session_attributes, active_contexts, fulfillment_state, intent, messag
             'dialogAction': {
                 'type': 'Close',
             },
-            'intent': intent,
-            'messages': [message]
-        }
+            'intent': intent
+            }
     }
 
     return response
@@ -125,8 +116,7 @@ def delegate(session_attributes, active_contexts, intent, message):
             'dialogAction': {
                 'type': 'Delegate',
             },
-            'intent': intent,
-            'messages': [message]
+            'intent': intent
         }
     }
 
@@ -142,12 +132,8 @@ def initial_message(intent_name):
                     'confirmationState': 'None',
                     'name': intent_name,
                     'state': 'InProgress'
-                },
-                'messages': [{
-                    'contentType': 'PlainText',
-                    'content': 'Start eliciting slots'
-                }]
-        }
+                }
+            }
     }
     
     return response
