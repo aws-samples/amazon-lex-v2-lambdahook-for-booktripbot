@@ -1,4 +1,13 @@
 """
+ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+"""
+
+"""
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: MIT-0
  
@@ -94,8 +103,9 @@ def close(session_attributes, active_contexts, fulfillment_state, intent, messag
             'dialogAction': {
                 'type': 'Close',
             },
-            'intent': intent
-            }
+            'intent': intent,
+        },
+        'messages': [{'contentType': 'PlainText', 'content': message}]
     }
 
     return response
@@ -116,8 +126,9 @@ def delegate(session_attributes, active_contexts, intent, message):
             'dialogAction': {
                 'type': 'Delegate',
             },
-            'intent': intent
-        }
+            'intent': intent,
+        },
+        'messages': [{'contentType': 'PlainText', 'content': message}]
     }
 
 
@@ -436,20 +447,10 @@ def book_hotel(intent_request):
             elif confirmation_status == 'Confirmed':
                 # Booking the hotel.  In a real application, this would likely involve a call to a backend service.
                 logger.debug('bookHotel under={}'.format(reservation))
-
-
                 intent['confirmationState']="Confirmed"
                 intent['state']="Fulfilled"
-                return close(
-                    session_attributes,
-                    active_contexts,
-                    'Fulfilled',
-                    intent,
-                    {
-                        'contentType': 'PlainText',
-                        'content': 'Thanks, I have placed your reservation.   Please let me know if you would like to book a car '
-                        'rental, or another hotel.'
-                    }
+                return close(session_attributes, active_contexts, 'Fulfilled', intent,
+                    'Thanks, I have placed your reservation.   Please let me know if you would like to book a car, rental, or another hotel.'
                 )
 
    
@@ -469,7 +470,7 @@ def book_car(intent_request):
     driver_age = try_ex(slots['DriverAge'])
     car_type = try_ex(slots['CarType'])
     confirmation_status = intent_request['sessionState']['intent']['confirmationState']
-    session_attributes = intent_request['sessionState']['sessionAttributes'] if intent_request['sessionState']['sessionAttributes'] is not None else {}
+    session_attributes = intent_request['sessionState'].get("sessionAttributes") or {}
     intent = intent_request['sessionState']['intent']
     active_contexts = {}
 
@@ -518,16 +519,14 @@ def book_car(intent_request):
         if confirmation_status == 'Confirmed':
             intent['confirmationState']="Confirmed"
             intent['state']="Fulfilled"
-            return close(
+            msg = close(
                 session_attributes,
                 active_contexts,
                 'Fulfilled',
                 intent,
-                {
-                    'contentType': 'PlainText',
-                    'content': 'Thanks, I have placed your reservation.'
-                }
+                'Thanks, I have placed your reservation.'
             )
+            return msg
 
 
 # --- Intents ---
@@ -563,7 +562,7 @@ def dispatch(intent_request):
         
     #If the user is asking to reserve a car, and there are active session attributes from the BookHotel intent, 
     #Lex will try to confirm if the values should be reused
-    elif 'activeContexts' in intent_request['sessionState']:
+    elif 'activeContexts' in intent_request['sessionState'] and len(intent_request['sessionState']['activeContexts']):
         active_contexts = intent_request['sessionState']['activeContexts'][0]
         session_attributes = intent_request['sessionState']['sessionAttributes']
         intent = intent_request['sessionState']['intent']
@@ -639,5 +638,4 @@ def lambda_handler(event, context):
     os.environ['TZ'] = 'America/New_York'
     time.tzset()
     #logger.debug('event.bot.name={}'.format(event['bot']['name']))
-
     return dispatch(event)
