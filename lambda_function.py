@@ -1,13 +1,4 @@
 """
- INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-"""
-
-"""
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: MIT-0
  
@@ -519,14 +510,13 @@ def book_car(intent_request):
         if confirmation_status == 'Confirmed':
             intent['confirmationState']="Confirmed"
             intent['state']="Fulfilled"
-            msg = close(
+            return close(
                 session_attributes,
                 active_contexts,
                 'Fulfilled',
                 intent,
                 'Thanks, I have placed your reservation.'
             )
-            return msg
 
 
 # --- Intents ---
