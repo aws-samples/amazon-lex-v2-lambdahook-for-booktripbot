@@ -14,7 +14,6 @@
  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 """
 
 """
@@ -22,11 +21,9 @@ This sample demonstrates an implementation of the Lex Code Hook Interface
 in order to serve a sample bot which manages reservations for hotel rooms and car rentals.
 Bot, Intent, and Slot models which are compatible with this sample can be found in the Lex Console
 as part of the 'BookTrip' template.
-
 This sample is compatible with the Amazon Lex V2 data structure. It can be invoked as a Lambda Hook
 at the Fulfillment section of both intents included in the bot configuration (BookHotel and BookCar), 
 as well as an initialization and validation function at each turn of the dialog.   
-
 For instructions on how to set up and test this bot, as well as additional samples,
 visit the Lex Getting Started documentation http://docs.aws.amazon.com/lex/latest/dg/getting-started.html.
 """
@@ -441,7 +438,8 @@ def book_hotel(intent_request):
                 intent['confirmationState']="Confirmed"
                 intent['state']="Fulfilled"
                 return close(session_attributes, active_contexts, 'Fulfilled', intent,
-                    'Thanks, I have placed your reservation.   Please let me know if you would like to book a car, rental, or another hotel.'
+                    'Tu reservación de hotel ha quedado registrada. ¿Te puedo ayudar con algo más?'
+                    #'Thanks, I have placed your reservation.   Please let me know if you would like to book a car, rental, or another hotel.'
                 )
 
    
@@ -515,7 +513,8 @@ def book_car(intent_request):
                 active_contexts,
                 'Fulfilled',
                 intent,
-                'Thanks, I have placed your reservation.'
+                'Listo, tu reservación está completa. Ha sido un placer ayudarte. :D'
+                #'Thanks, I have placed your reservation.'
             )
 
 
